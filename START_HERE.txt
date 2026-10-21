@@ -1,0 +1,14 @@
+P-CUT 0.2.0 — SEPARATE APP
+
+Do not upload this into Pulse.
+
+1. Update your existing p-cut repository, or create it once if you have not done so.
+2. Extract this ZIP and upload the CONTENTS of its p-cut folder to the new repository root.
+3. Check that .github/workflows/main.yml exists.
+4. Actions > P-cut native builds > Run workflow.
+5. Download the APK and Windows artifacts after both jobs pass.
+
+Read README.md for Windows FFmpeg setup, implemented tools and pending native/device checks.
+This ZIP is source code, not a finished compiled APK or EXE.
+
+New: keyframes, crossfades, audio fades, voiceover and editable SRT subtitles. Optional Windows auto captions require a separate speech engine and model. Android speech recognition remains pending. Native builds and device tests are still required.
