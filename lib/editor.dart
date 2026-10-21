@@ -5,7 +5,7 @@ import 'dart:ui' show FontFeature;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:media_kit/media_kit.dart';
+import 'package:media_kit/media_kit.dart' hide AudioTrack;
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:path_provider/path_provider.dart';
 import 'project.dart';
@@ -244,15 +244,13 @@ class _CutEditorState extends State<CutEditor> with WidgetsBindingObserver {
     setState(() {
       playing = false;
     });
-    final files = await FilePicker.platform.pickFiles(
+    final files = await FilePicker.pickFiles(
       type: FileType.custom,
-      allowMultiple: !music,
       allowedExtensions: music
           ? ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg']
           : ['mp4', 'mov', 'mkv', 'webm', 'jpg', 'jpeg', 'png', 'webp'],
-      withData: false,
     );
-    if (files == null || !mounted) return;
+    if (files.isEmpty || !mounted) return;
     setState(() {
       busy = true;
       progress = 0;
@@ -261,8 +259,8 @@ class _CutEditorState extends State<CutEditor> with WidgetsBindingObserver {
     final added = <File>[];
     try {
       var next = project;
-      for (var i = 0; i < files.files.length; i++) {
-        final picked = files.files[i];
+      for (var i = 0; i < files.length; i++) {
+        final picked = files[i];
         if (picked.path == null)
           throw StateError('This file cannot be opened. Choose a local copy.');
         if (music && next.audio.length >= 4)
@@ -272,7 +270,7 @@ class _CutEditorState extends State<CutEditor> with WidgetsBindingObserver {
         final file = await widget.store.import(project, File(picked.path!), (
           v,
         ) {
-          if (mounted) setState(() => progress = (i + v) / files.files.length);
+          if (mounted) setState(() => progress = (i + v) / files.length);
         });
         added.add(file);
         final ext = file.path.split('.').last.toLowerCase();
@@ -435,12 +433,12 @@ class _CutEditorState extends State<CutEditor> with WidgetsBindingObserver {
                     icon: const Icon(Icons.folder_open),
                     label: const Text('Locate ffmpeg.exe'),
                     onPressed: () async {
-                      final result = await FilePicker.platform.pickFiles(
+                      final result = await FilePicker.pickFile(
                         type: FileType.custom,
                         allowedExtensions: ['exe'],
                       );
                       if (result != null) {
-                        exporter.ffmpegPath = result.files.single.path;
+                        exporter.ffmpegPath = result.path;
                         if (context.mounted) refresh(() {});
                       }
                     },
@@ -535,7 +533,7 @@ class _CutEditorState extends State<CutEditor> with WidgetsBindingObserver {
                       dialog,
                     ).showSnackBar(SnackBar(content: Text(message)));
                 } else {
-                  final destination = await FilePicker.platform.saveFile(
+                  final destination = await FilePicker.saveFile(
                     dialogTitle: 'Save P-cut video',
                     fileName: file.uri.pathSegments.last,
                     type: FileType.custom,

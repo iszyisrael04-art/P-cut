@@ -135,13 +135,13 @@ class _CaptionsPageState extends State<CaptionsPage> {
   }
 
   Future<void> import() async {
-    final result = await FilePicker.platform.pickFiles(
+    final result = await FilePicker.pickFile(
       type: FileType.custom,
       allowedExtensions: ['srt'],
     );
     if (result == null || !mounted) return;
     try {
-      final path = result.files.single.path;
+      final path = result.path;
       if (path == null) throw StateError('Choose a local subtitle file.');
       final source = File(path);
       if (await source.length() > 2 * 1024 * 1024)
@@ -192,7 +192,7 @@ class _CaptionsPageState extends State<CaptionsPage> {
       await widget.directory.create(recursive: true);
       final file = File('${widget.directory.path}/subtitles.srt');
       await file.writeAsString(writeSrt(cues));
-      final destination = await FilePicker.platform.saveFile(
+      final destination = await FilePicker.saveFile(
         fileName: 'P-cut-subtitles.srt',
         type: FileType.custom,
         allowedExtensions: ['srt'],

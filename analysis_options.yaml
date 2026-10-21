@@ -1,0 +1,4 @@
+# Use the Dart analyzer defaults; no unresolved generated lint include.
+analyzer:
+  exclude:
+    - build/**

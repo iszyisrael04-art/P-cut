@@ -1,5 +1,5 @@
 #define AppName "P-cut"
-#define AppVersion "0.2.0"
+#define AppVersion "0.2.1"
 [Setup]
 AppId={{D31D7488-F2FD-4129-B824-B2A3D4C9B027}
 AppName={#AppName}

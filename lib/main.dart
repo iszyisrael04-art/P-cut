@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 import 'storage.dart';
-import 'project.dart';
+import 'project.dart' hide Clip;
 import 'editor.dart';
 import 'painting.dart';
 
@@ -124,7 +124,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
           onPressed: () => showAboutDialog(
             context: context,
             applicationName: 'P-cut',
-            applicationVersion: '0.2.0 · native editor',
+            applicationVersion: '0.2.1 · native editor',
             applicationIcon: const Mark(),
             children: const [
               Text(

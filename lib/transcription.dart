@@ -63,7 +63,7 @@ class _TranscriptionPageState extends State<TranscriptionPage> {
   }
 
   Future<void> choose(String type) async {
-    final file = await FilePicker.platform.pickFiles(
+    final file = await FilePicker.pickFile(
       type: FileType.custom,
       allowedExtensions: type == 'model' ? ['bin', 'ggml', 'gguf'] : ['exe'],
     );
@@ -71,11 +71,11 @@ class _TranscriptionPageState extends State<TranscriptionPage> {
     setState(() {
       switch (type) {
         case 'model':
-          model = file.files.single.path;
+          model = file.path;
         case 'cli':
-          cli = file.files.single.path;
+          cli = file.path;
         default:
-          engine.ffmpegPath = file.files.single.path;
+          engine.ffmpegPath = file.path;
       }
     });
     await saveSettings();
