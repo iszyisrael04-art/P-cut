@@ -196,11 +196,11 @@ class _CaptionsPageState extends State<CaptionsPage> {
         fileName: 'P-cut-subtitles.srt',
         type: FileType.custom,
         allowedExtensions: ['srt'],
-        bytes: Platform.isAndroid ? await file.readAsBytes() : null,
+        bytes: await file.readAsBytes(),
+        mimeType: 'application/x-subrip',
       );
-      if (destination != null && Platform.isWindows && destination != file.path)
-        await file.copy(destination);
-      if (mounted) showError(context, 'SRT saved: ${file.path}');
+      if (destination == null) return;
+      if (mounted) showError(context, 'SRT saved: $destination');
     } catch (e) {
       if (mounted) showError(context, e);
     }

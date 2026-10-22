@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
-import 'dart:ui' show FontFeature;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -533,14 +532,27 @@ class _CutEditorState extends State<CutEditor> with WidgetsBindingObserver {
                       dialog,
                     ).showSnackBar(SnackBar(content: Text(message)));
                 } else {
-                  final destination = await FilePicker.saveFile(
-                    dialogTitle: 'Save P-cut video',
-                    fileName: file.uri.pathSegments.last,
-                    type: FileType.custom,
-                    allowedExtensions: ['mp4'],
+                  // Keep large MP4 files out of a Uint8List save dialog.
+                  final directory = await FilePicker.getDirectoryPath(
+                    dialogTitle: 'Choose a folder for your P-cut video',
                   );
-                  if (destination != null && destination != file.path)
-                    await file.copy(destination);
+                  if (directory == null) return;
+                  final name = file.uri.pathSegments.last;
+                  final stem = name.replaceFirst(RegExp(r'\.mp4$'), '');
+                  var destination = File(
+                    '$directory${Platform.pathSeparator}$name',
+                  );
+                  var suffix = 1;
+                  while (await destination.exists()) {
+                    destination = File(
+                      '$directory${Platform.pathSeparator}$stem ($suffix).mp4',
+                    );
+                    suffix++;
+                  }
+                  await file.copy(destination.path);
+                  if (dialog.mounted) {
+                    showError(dialog, 'Video saved: ${destination.path}');
+                  }
                 }
               } catch (e) {
                 if (dialog.mounted) showError(dialog, e);
