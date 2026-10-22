@@ -124,7 +124,7 @@ class _ProjectsPageState extends State<ProjectsPage> {
           onPressed: () => showAboutDialog(
             context: context,
             applicationName: 'P-cut',
-            applicationVersion: '0.2.2 · native editor',
+            applicationVersion: '0.2.3 · native editor',
             applicationIcon: const Mark(),
             children: const [
               Text(

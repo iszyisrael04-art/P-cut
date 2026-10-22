@@ -26,6 +26,7 @@ import androidx.media3.common.audio.ChannelMixingAudioProcessor
 import androidx.media3.common.audio.ChannelMixingMatrix
 import androidx.media3.common.audio.SpeedProvider
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.effect.TextureOverlay
 import androidx.media3.effect.BitmapOverlay
 import androidx.media3.effect.Brightness
 import androidx.media3.effect.Contrast
@@ -211,7 +212,7 @@ class CutRenderer(private val activity: Activity, messenger: BinaryMessenger) {
     }
     val captions=(project["captions"] as? List<*>)?.map{it as Map<*, *>} ?: emptyList()
     require(captions.size<=500)
-    val allGraphics=graphics.toMutableList<BitmapOverlay>()
+    val allGraphics=mutableListOf<TextureOverlay>().apply { addAll(graphics) }
     if(captions.isNotEmpty()){
       val image=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);bitmaps.add(image)
       allGraphics.add(object:BitmapOverlay(){

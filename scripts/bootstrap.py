@@ -43,7 +43,7 @@ def configure(root: Path):
     drawable = root / 'android/app/src/main/res/drawable'
     drawable.mkdir(parents=True, exist_ok=True)
     (drawable / 'pcut_mark.xml').write_text('''<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="96dp" android:height="96dp" android:viewportWidth="100" android:viewportHeight="100"><path android:fillColor="#C6FF37" android:pathData="M20,8h60q12,0 12,12v60q0,12 -12,12H20q-12,0 -12,-12V20q0,-12 12,-12"/><path android:strokeColor="#101218" android:strokeWidth="6" android:strokeLineCap="round" android:fillColor="#00000000" android:pathData="M37,59L72,24M35,38L72,76M36,61a10,10 0,1 0,-14,14a10,10 0,1 0,14,-14M36,37a10,10 0,1 0,-14,-14a10,10 0,1 0,14,14"/></vector>''', encoding='utf-8')
-    (drawable / 'launch_background.xml').write_text('''<layer-list xmlns:android="http://schemas.android.com/apk/res/android"><item android:drawable="#0D0F14"/><item android:width="96dp" android:height="96dp" android:gravity="center" android:drawable="@drawable/pcut_mark"/></layer-list>''', encoding='utf-8')
+    (drawable / 'launch_background.xml').write_text('''<layer-list xmlns:android="http://schemas.android.com/apk/res/android"><item><shape android:shape="rectangle"><solid android:color="#0D0F14"/></shape></item><item android:width="96dp" android:height="96dp" android:gravity="center" android:drawable="@drawable/pcut_mark"/></layer-list>''', encoding='utf-8')
     v21=root/'android/app/src/main/res/drawable-v21'
     v21.mkdir(parents=True,exist_ok=True)
     shutil.copyfile(drawable/'launch_background.xml',v21/'launch_background.xml')

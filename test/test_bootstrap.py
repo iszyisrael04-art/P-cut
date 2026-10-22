@@ -2,6 +2,7 @@ import importlib.util
 from pathlib import Path
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 from unittest.mock import patch
 
 spec=importlib.util.spec_from_file_location('bootstrap',Path(__file__).resolve().parents[1]/'scripts/bootstrap.py')
@@ -32,6 +33,14 @@ class NativeConfigurationTest(unittest.TestCase):
                 self.assertEqual(run.call_args.kwargs['cwd'],root)
                 self.assertIn('--no-pub',run.call_args.args[0])
             self.assertEqual((root/'lib/main.dart').read_text(),fixtures['lib/main.dart'])
+            android = '{http://schemas.android.com/apk/res/android}'
+            for variant in ['drawable', 'drawable-v21']:
+                splash = ET.parse(root / f'android/app/src/main/res/{variant}/launch_background.xml').getroot()
+                self.assertEqual(splash.find('item/shape/solid').get(android + 'color'), '#0D0F14')
+                for item in splash.findall('item'):
+                    drawable = item.get(android + 'drawable')
+                    if drawable is not None:
+                        self.assertTrue(drawable.startswith(('@', '?')))
             self.assertIn('minSdk = 29',(root/'android/app/build.gradle.kts').read_text())
             self.assertIn('media3-transformer:1.9.0',(root/'android/app/build.gradle.kts').read_text())
             self.assertIn('L"P-cut"',(root/'windows/runner/main.cpp').read_text())
