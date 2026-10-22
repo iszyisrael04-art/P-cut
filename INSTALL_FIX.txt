@@ -1,0 +1,7 @@
+P-CUT 0.2.2 — COMPLETE REPLACEMENT FILES
+
+Extract and upload the lib and scripts folders plus the root files to your existing P-cut repository. Replace matching files; keep everything else.
+Commit and run Actions > P-cut native builds. No main.yml change required.
+
+Includes all 0.2.1 corrections and the remaining file_picker 13 saving corrections.
+The Flutter analyzer and native builds still need verification in Actions.

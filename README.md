@@ -1,4 +1,4 @@
-# P-cut 0.2.1
+# P-cut 0.2.2
 
 A separate native Flutter video editor for Android and Windows. This project does not modify Pulse, use Pulse accounts, or connect to Supabase. Editing is local. No paid service or API key is needed.
 
@@ -7,7 +7,7 @@ This is implemented editor source, not an already compiled or fully device-verif
 ## Build on GitHub
 
 1. Use your **`p-cut` repository** if you already created it; otherwise create it once. Keep your existing Pulse repository intact. Update matching P-cut files without deleting unrelated files.
-2. Extract `P-cut_Source_v0.2.1.zip`. Open the `p-cut` folder and upload its **contents** to the new repository root. `pubspec.yaml`, `lib`, `scripts`, `native`, `assets`, `test`, and `.github` must be at that root. The ZIP itself is not the app source layout for Actions.
+2. Extract `P-cut_Source_v0.2.2.zip`. Open the `p-cut` folder and upload its **contents** to the new repository root. `pubspec.yaml`, `lib`, `scripts`, `native`, `assets`, `test`, and `.github` must be at that root. The ZIP itself is not the app source layout for Actions.
 3. If GitHub's file picker hides `.github`, create `.github/workflows/main.yml` with **Add file → Create new file** and paste the file supplied in this project.
 4. Open **Actions → P-cut native builds → Run workflow**.
 5. When both jobs pass, download the `P-cut-Android-Beta` and `P-cut-Windows` artifacts. Extract each downloaded artifact ZIP. Android contains an APK. Windows contains the setup EXE and the complete portable application directory.
@@ -127,3 +127,7 @@ Obtain a CPU-compatible `whisper-cli.exe` and a supported GGML model from the of
 In P-cut: Subtitles → auto-caption sparkle icon (Windows only) → select speech EXE, model and FFmpeg → choose language → Generate subtitles. Review/edit the result, then Apply. Audio stays local. A model and a CPU-compatible CLI are not bundled, and no claim of tested speech recognition is made here. Android users can add subtitles manually or import SRT.
 
 Do not open and resave v0.2 projects in v0.1 if you want to preserve the new fields; older code does not know about keyframes, fades or subtitle tracks. v0.2 can load v0.1 projects.
+
+### 0.2.2 save compatibility correction
+
+Subtitle saving supplies bytes to file_picker 13 and uses its returned URI only for confirmation. Windows Save a copy opens a folder picker and copies the MP4 without loading the whole video into Dart memory; an existing filename gets a numbered suffix. Android gallery saving is unchanged. These API corrections require a new Flutter analyzer/native build; they have not been device-tested here.
